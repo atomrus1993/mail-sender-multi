@@ -27,6 +27,8 @@ services:
     # у нас свой образ для PHP, указываем путь к нему и говорим что его надо собрать
     build: ./php
     restart: always
+    links:
+      - db
     depends_on:
       - db
     env_file:
@@ -34,6 +36,7 @@ services:
     # монтируем директорию с проектами
     volumes:
       - ./../../App:/var/www
+      - ./../../.env:/var/.env
   db:
     image: postgres
     restart: always
