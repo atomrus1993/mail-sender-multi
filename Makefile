@@ -4,8 +4,8 @@ stop:
 	docker-compose -f $(path_local) stop
 init-local:
 	docker-compose -f $(path_local) up -d
-	docker-compose -f $(path_local) exec php composer install
-	docker-compose -f $(path_local) exec php yii migrate/up --interactive=0 # todo need bug fix
+	docker-compose -f $(path_local) exec php composer install 	# зависимости
+	docker exec php php yii migrate/up --interactive=0			# миграции
 
 rebuild-php-local:
 	docker-compose -f $(path_local) build php

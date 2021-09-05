@@ -3,6 +3,16 @@
 $params = require __DIR__ . '/params.php';
 $db     = require __DIR__ . '/db.php';
 
+if (YII_ENV_PROD) {
+    $db = array_merge($db, [
+        // Schema cache options (for production environment)
+        'enableSchemaCache' => true,
+        'schemaCacheDuration' => 60,
+        'schemaCache' => 'cache',
+    ]);
+}
+
+require_once __DIR__ . '/di.php';
 $config = [
     'id'             => 'basic',
     'basePath'       => dirname(__DIR__),
@@ -22,8 +32,9 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user'         => [
-            'identityClass'   => 'app\models\User',
+            'identityClass'   => 'app\models\UserIdentity',
             'enableAutoLogin' => true,
+            'loginUrl' => ['/site/login']
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -54,7 +65,8 @@ $config = [
                     'route'   => 'site/index',
                     'suffix'  => '',
                 ],
-
+                'auth' => 'site/login',
+                'logout' => 'site/logout',
             ],
         ],
         'assetManager' => [
