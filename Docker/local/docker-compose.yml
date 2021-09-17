@@ -7,7 +7,7 @@ services:
     container_name: nginx
     # используем последний стабильный образ nginx
     image: nginx:latest
-    restart: always
+    restart: on-failure
     # маршрутизируем порты
     ports:
       - "80:80"
@@ -26,7 +26,7 @@ services:
     container_name: php
     # у нас свой образ для PHP, указываем путь к нему и говорим что его надо собрать
     build: ./php
-    restart: always
+    restart: on-failure
     depends_on:
       - db
     env_file:
@@ -37,7 +37,7 @@ services:
       - ./../../.env:/var/.env
   db:
     image: postgres
-    restart: always
+    restart: on-failure
     ports:
       - "5432:5432"
     volumes:
